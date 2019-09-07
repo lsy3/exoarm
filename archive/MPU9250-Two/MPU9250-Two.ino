@@ -15,6 +15,13 @@
 #include "MPU9250.h"
 #include <Servo.h>
 #include "Quaternion.h"
+#include "HX711.h" //This library can be obtained here http://librarymanager/All#Avia_HX711
+
+
+#define calibration_factor -7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
+#define LOADCELL_DOUT_PIN  PB10
+#define LOADCELL_SCK_PIN  PB11
+HX711 scale;
 
 #define SPI_CLOCK 8000000  // 8MHz clock works.
 
@@ -28,9 +35,9 @@
 
 int mode = -1; 
 #define WAITFORINPUT(){            \
-	while(!Serial.available()){};  \
-	while(Serial.available()){     \
-		mode = Serial.read();             \
+	while(!Serial1.available()){};  \
+	while(Serial1.available()){     \
+		mode = Serial1.read();             \
 	};                             \
 }                                  \
 
@@ -136,7 +143,11 @@ void setup() {
       delay(1);
     }
     qRef = Quaternion(qone) * Quaternion(qtwo).conj();
-    
+
+    scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
+    scale.set_scale(calibration_factor); //This value is obtained by using the SparkFun_HX711_Calibration sketch
+    scale.tare();  //Assuming there is no weight on the scale at start up, reset the scale to 0
+  
     Serial.println("Chosen rehab mode");
     Serial1.println("Chosen rehab mode");
   } else {
@@ -180,16 +191,24 @@ void loop() {
 //    Serial1.print(angle3[i], 2);
 //    Serial1.print(" ");
 //  }
-  Serial.println(); Serial1.println();
+//  Serial.println(); Serial1.println();
   
   if (mode == MODE_SENSE) {
     delay(5);
-  } else if (mode == MODE_REHAB) {    
-    if(pos <= 0) change = 2;
-    else if(pos >= 135) change = -2;
+    Serial.println(); Serial1.println();
+  } else if (mode == MODE_REHAB) {
+    change = (int)scale.get_units();
+    if(pos < 0) {
+      change = 0;
+      pos = 0;
+    } else if(pos > 135) {
+      change = 0;
+      pos = 135;
+    }
     pos += change;
     myservo.write(pos); // tell servo to go to position in variable 'pos'
   	delay(1);
+    Serial.println(scale.get_units()); Serial1.println(scale.get_units());
   }
 }
 

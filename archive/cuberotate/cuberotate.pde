@@ -32,9 +32,9 @@ void setup()
 {
   size(640, 480, OPENGL);
   frameRate(30);
-  model = new OBJModel(this);
-  model.load("bunny.obj");
-  model.scale(20);
+  //model = new OBJModel(this);
+  //model.load("bunny.obj");
+  //model.scale(20);
   
   // Serial port setup.
   // Grab list of serial ports and choose one that was persisted earlier or default to the first port.
