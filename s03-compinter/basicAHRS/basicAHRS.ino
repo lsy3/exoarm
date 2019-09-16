@@ -178,7 +178,7 @@
 
 // Using the MSENSR-9250 breakout board, ADO is set to 0 
 // Seven-bit device address is 110100 for ADO = 0 and 110101 for ADO = 1
-#define ADO 1
+#define ADO 0
 #if ADO
 #define MPU9250_ADDRESS 0x69  // Device address when ADO = 1
 #else
@@ -261,11 +261,16 @@ float eInt[3] = {0.0f, 0.0f, 0.0f};       // vector to hold integral error for M
 
 void setup()
 {
+  Serial.begin(115200);
+  /* blue pill powew IMU through GPIO. not highly recommended */
+  pinMode(PB8, OUTPUT);
+  pinMode(PB9, OUTPUT);
+  digitalWrite(PB8, HIGH);
+  digitalWrite(PB9, LOW);
   Wire.begin();
 //  TWBR = 12;  // 400 kbit/sec I2C speed
   // Setup for Master mode, pins 18/19, external pullups, 400kHz
   //Wire.begin(I2C_MASTER, 0x00, I2C_PINS_16_17, I2C_PULLUP_EXT, I2C_RATE_100);
-  Serial.begin(38400);
   
   // Set up the interrupt pin, its set as active high, push-pull
   pinMode(intPin, INPUT);
@@ -275,17 +280,12 @@ void setup()
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);
 
-  /* blue pill powew IMU through GPIO. not highly recommended */
-  pinMode(PB8, OUTPUT);
-  pinMode(PB9, OUTPUT);
-  digitalWrite(PB8, HIGH);
-  digitalWrite(PB9, LOW);
-
-
+  Serial.println("Starting up...");
+  delay(1000);
   // Read the WHO_AM_I register, this is a good test of communication
   byte c = readByte(MPU9250_ADDRESS, WHO_AM_I_MPU9250);  // Read WHO_AM_I register for MPU-9250
   Serial.print("MPU9250 "); Serial.print("I AM "); Serial.print(c, HEX); Serial.print(" I should be "); Serial.println(0x71, HEX);
-  delay(5000); 
+  delay(1000); 
 
   if (c == 0x71) // WHO_AM_I should always be 0x68
   {  

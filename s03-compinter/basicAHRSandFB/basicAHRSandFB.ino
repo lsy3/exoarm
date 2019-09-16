@@ -155,7 +155,7 @@
 
 // Using the MSENSR-9250 breakout board, ADO is set to 0 
 // Seven-bit device address is 110100 for ADO = 0 and 110101 for ADO = 1
-#define ADO 1
+#define ADO 0
 #if ADO
 #define MPU9250_ADDRESS 0x69  // Device address when ADO = 1
 #else
@@ -167,10 +167,10 @@
 #define SerialDebug false   // set to true to get Serial output for debugging
 
 #define LOAD_CALIB_FACTOR -7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
-#define LOADCELL_DOUT_PIN  PB10
-#define LOADCELL_SCK_PIN  PB11
+#define LOADCELL_DOUT_PIN  PC14
+#define LOADCELL_SCK_PIN  PC13
 
-#define MOTOR_PIN PA2
+#define MOTOR_PIN PB1
 #define MOTOR_MAXPOS 125
 #define MOTOR_MINPOS 0
 
@@ -252,11 +252,18 @@ float eInt[3] = {0.0f, 0.0f, 0.0f};       // vector to hold integral error for M
 
 void setup()
 {
+  /* blue pill powew IMU through GPIO. not highly recommended */
+  pinMode(PB8, OUTPUT);
+  pinMode(PB9, OUTPUT);
+  digitalWrite(PB8, HIGH);
+  digitalWrite(PB9, LOW);
+  
   Wire.begin();
 //  TWBR = 12;  // 400 kbit/sec I2C speed
   // Setup for Master mode, pins 18/19, external pullups, 400kHz
   //Wire.begin(I2C_MASTER, 0x00, I2C_PINS_16_17, I2C_PULLUP_EXT, I2C_RATE_100);
   Serial.begin(38400);
+  Serial1.begin(9600);
   
   // Set up the interrupt pin, its set as active high, push-pull
   pinMode(intPin, INPUT);
@@ -265,12 +272,6 @@ void setup()
   digitalWrite(adoPin, HIGH);
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);
-
-  /* blue pill powew IMU through GPIO. not highly recommended */
-  pinMode(PB8, OUTPUT);
-  pinMode(PB9, OUTPUT);
-  digitalWrite(PB8, HIGH);
-  digitalWrite(PB9, LOW);
 
   /* initialize load cell */
   scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
@@ -281,13 +282,13 @@ void setup()
   pinMode(MOTOR_PIN, OUTPUT);
   myservo.attach(MOTOR_PIN); // attaches the servo on pin 9 to the servo object
   myservo.write(MOTOR_MINPOS);
-  delay(DELAY);
+  delay(1000);
   
 
   // Read the WHO_AM_I register, this is a good test of communication
   byte c = readByte(MPU9250_ADDRESS, WHO_AM_I_MPU9250);  // Read WHO_AM_I register for MPU-9250
   Serial.print("MPU9250 "); Serial.print("I AM "); Serial.print(c, HEX); Serial.print(" I should be "); Serial.println(0x71, HEX);
-  delay(5000); 
+  delay(2000); 
 
   if (c == 0x71) // WHO_AM_I should always be 0x68
   {  
@@ -467,14 +468,14 @@ void loop()
     // The 3.3 V 8 MHz Pro Mini is doing pretty well!
 
     // yaw pitch roll
-    Serial.print("Orientation: ");
-    Serial.print(yaw, 2);
-    Serial.print(" ");
-    Serial.print(pitch, 2);
-    Serial.print(" ");
-    Serial.print(roll, 2);
-    Serial.print(" ");
-    Serialprintln(pos);
+    Serial1.print("Orientation: ");
+    Serial1.print(yaw, 2);
+    Serial1.print(" ");
+    Serial1.print(pitch, 2);
+    Serial1.print(" ");
+    Serial1.print(roll, 2);
+    Serial1.print(" ");
+    Serial1.println(pos);
     
     digitalWrite(LED_PIN, !digitalRead(LED_PIN));
     count = millis(); 
@@ -483,7 +484,7 @@ void loop()
     }
   }
 
-  pos += FB_SCALE*scale.get_units();
+  pos -= FB_SCALE*scale.get_units();
 
   if(pos < MOTOR_MINPOS) pos = MOTOR_MINPOS;
   else if(pos > MOTOR_MAXPOS) pos = MOTOR_MAXPOS;

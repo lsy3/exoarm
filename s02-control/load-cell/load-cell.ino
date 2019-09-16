@@ -27,8 +27,10 @@
 
 #define calibration_factor -7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
 
-#define LOADCELL_DOUT_PIN  PB10
-#define LOADCELL_SCK_PIN  PB11
+//#define LOADCELL_DOUT_PIN  PB10
+//#define LOADCELL_SCK_PIN  PB11
+#define LOADCELL_DOUT_PIN  PC14
+#define LOADCELL_SCK_PIN  PC13
 
 HX711 scale;
 
