@@ -484,7 +484,7 @@ void loop()
     }
   }
 
-  pos -= FB_SCALE*scale.get_units();
+  pos += FB_SCALE*scale.get_units();
 
   if(pos < MOTOR_MINPOS) pos = MOTOR_MINPOS;
   else if(pos > MOTOR_MAXPOS) pos = MOTOR_MAXPOS;
