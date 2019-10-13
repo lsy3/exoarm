@@ -174,7 +174,10 @@
 #define MOTOR_MAXPOS 125
 #define MOTOR_MINPOS 0
 
-#define FB_SCALE 0.5
+#define K_P 0.6
+#define K_I 0.0
+#define K_D 0.1
+double error, new_error, int_error, diff_error;
 
 HX711 scale;
 Servo myservo; // create servo object to control a servo
@@ -279,6 +282,9 @@ void setup()
   scale.tare();  //Assuming there is no weight on the scale at start up, reset the scale to 0
 
   /* initialize motor */
+  error = 0.0;
+  int_error = 0.0;
+  diff_error = 0.0;
   pinMode(MOTOR_PIN, OUTPUT);
   myservo.attach(MOTOR_PIN); // attaches the servo on pin 9 to the servo object
   myservo.write(MOTOR_MINPOS);
@@ -484,8 +490,13 @@ void loop()
     }
   }
 
-  pos += FB_SCALE*scale.get_units();
+  new_error = scale.get_units();
+  int_error += error;
+  diff_error = new_error - error;
+  error = new_error;
 
+  pos += K_P*error + K_D*diff_error + K_I*int_error;
+  
   if(pos < MOTOR_MINPOS) pos = MOTOR_MINPOS;
   else if(pos > MOTOR_MAXPOS) pos = MOTOR_MAXPOS;
   myservo.write(pos);
