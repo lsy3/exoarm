@@ -48,7 +48,8 @@ void loop() {
   diff_error = new_error - error;
   error = new_error;
 
-  pos += K_P*error + K_D*diff_error + K_I*int_error;
+  // proportional + integral + derivative
+  pos += K_P*error + K_I*int_error + K_D*diff_error;
 
   if(pos < MOTOR_MINPOS) pos = MOTOR_MINPOS;
   else if(pos > MOTOR_MAXPOS) pos = MOTOR_MAXPOS;
