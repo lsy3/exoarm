@@ -164,7 +164,7 @@
 #endif  
 
 #define AHRS true         // set to false for basic data read
-#define SerialDebug false   // set to true to get Serial output for debugging
+#define SerialDebug true   // set to true to get Serial output for debugging
 
 #define LOAD_CALIB_FACTOR -7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
 #define LOADCELL_DOUT_PIN  PC14
@@ -266,7 +266,7 @@ void setup()
   // Setup for Master mode, pins 18/19, external pullups, 400kHz
   //Wire.begin(I2C_MASTER, 0x00, I2C_PINS_16_17, I2C_PULLUP_EXT, I2C_RATE_100);
   Serial.begin(38400);
-  Serial1.begin(9600);
+  Serial1.begin(38400);
   
   // Set up the interrupt pin, its set as active high, push-pull
   pinMode(intPin, INPUT);
