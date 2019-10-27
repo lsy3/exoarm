@@ -2,7 +2,6 @@ import processing.serial.*;
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
 import processing.opengl.*;
-import saito.objloader.*;
 import g4p_controls.*;
 
 int boxLength = 100;
@@ -13,8 +12,6 @@ float yaw1   = 0.0F; // x
 float elbow  = 0.0F;
 float temp  = 0.0F;
 float alt   = 0.0F;
-
-OBJModel model;
 
 // Serial port state.
 Serial       port;
@@ -32,10 +29,6 @@ void setup()
 {
   size(640, 480, OPENGL);
   frameRate(30);
-  
-  //model = new OBJModel(this);
-  //model.load("bunny.obj");
-  //model.scale(20);
   
   // Serial port setup.
   // Grab list of serial ports and choose one that was persisted earlier or default to the first port.
@@ -88,46 +81,37 @@ void draw()
   translate(320, 240, 0);
   
   // Rotate shapes around the X/Y/Z axis (values in radians, 0..Pi*2)
-  //rotateZ(radians(roll));
-  //rotateX(radians(pitch)); // extrinsic rotation
-  //rotateY(radians(yaw));
-  float c1 = cos(radians(roll1));
-  float s1 = sin(radians(roll1));
-  float c2 = cos(radians(pitch1)); // intrinsic rotation
-  float s2 = sin(radians(pitch1));
-  float c3 = cos(radians(yaw1));
-  float s3 = sin(radians(yaw1));
-  applyMatrix( c2*c3, s1*s3+c1*c3*s2, c3*s1*s2-c1*s3, 0,
-               -s2, c1*c2, c2*s1, 0,
-               c2*s3, c1*s2*s3-c3*s1, c1*c3+s1*s2*s3, 0,
-               0, 0, 0, 1);
-  noStroke();
-  translate(boxLength, 0, 0);
-  fill(0, 0, 255, 128); //blue
-  box(boxLength,boxWidth,boxWidth);
-  pushMatrix();
-  
-  translate(boxLength/2, 0, 0);
-  //c1 = cos(radians(roll1));
-  //s1 = sin(radians(roll1));
-  //c2 = cos(radians(pitch1)); // intrinsic rotation
-  //s2 = sin(radians(pitch1));
-  //c3 = cos(radians(yaw1));
-  //s3 = sin(radians(yaw1));
+  rotateY(radians(roll1));
+  rotateZ(radians(pitch1));
+  rotateX(radians(yaw1)); // extrinsic rotation
+  //float c1 = cos(radians(roll1));
+  //float s1 = sin(radians(roll1));
+  //float c2 = cos(radians(pitch1)); // intrinsic rotation
+  //float s2 = sin(radians(pitch1));
+  //float c3 = cos(radians(yaw1));
+  //float s3 = sin(radians(yaw1));
   //applyMatrix( c2*c3, s1*s3+c1*c3*s2, c3*s1*s2-c1*s3, 0,
   //             -s2, c1*c2, c2*s1, 0,
   //             c2*s3, c1*s2*s3-c3*s1, c1*c3+s1*s2*s3, 0,
   //             0, 0, 0, 1);
+  noStroke();
+  translate(boxLength/2, 0, 0);
+  fill(0, 0, 255, 128); //blue
+  box(boxLength,2*boxWidth,boxWidth);
+  pushMatrix();
+  
+  translate(boxLength/2, 0, 0);
   rotateZ(radians(-elbow));
   translate(boxLength/2, 0, 0);
   pushMatrix();
   fill(255, 0, 0, 128); //red
-  box(boxLength,boxWidth,boxWidth);
+  box(boxLength,2*boxWidth,boxWidth);
   popMatrix();
 
   popMatrix();
   popMatrix();
   //print("draw");
+  //elbow++;
 }
 
 void serialEvent(Serial p) 

@@ -164,7 +164,7 @@
 #endif  
 
 #define AHRS true         // set to false for basic data read
-#define SerialDebug true   // set to true to get Serial output for debugging
+#define SerialDebug false   // set to true to get Serial output for debugging
 
 #define LOAD_CALIB_FACTOR -7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
 #define LOADCELL_DOUT_PIN  PC14
@@ -442,7 +442,7 @@ void loop()
    
   // Define output variables from updated quaternion---these are Tait-Bryan angles, commonly used in aircraft orientation.
   // In this coordinate system, the positive z-axis is down toward Earth. 
-  // Yaw is the angle between Sensor x-axis and Earth magnetic North (or true North if corrected for local declination, looking down on the sensor positive yaw is counterclockwise.
+  // Yaw is the angle between Sensor z-axis and Earth magnetic North (or true North if corrected for local declination, looking down on the sensor positive yaw is counterclockwise.
   // Pitch is angle between sensor x-axis and Earth ground plane, toward the Earth is positive, up toward the sky is negative.
   // Roll is angle between sensor y-axis and Earth ground plane, y-axis up is positive roll.
   // These arise from the definition of the homogeneous rotation matrix constructed from quaternions.
@@ -482,7 +482,15 @@ void loop()
     Serial1.print(roll, 2);
     Serial1.print(" ");
     Serial1.println(pos);
-    
+    Serial.print("Orientation: ");
+    Serial.print(yaw, 2);
+    Serial.print(" ");
+    Serial.print(pitch, 2);
+    Serial.print(" ");
+    Serial.print(roll, 2);
+    Serial.print(" ");
+    Serial.println(pos);
+      
     digitalWrite(LED_PIN, !digitalRead(LED_PIN));
     count = millis(); 
     sumCount = 0;
