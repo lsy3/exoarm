@@ -2,7 +2,6 @@ import processing.serial.*;
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
 import processing.opengl.*;
-import saito.objloader.*;
 import g4p_controls.*;
 
 int boxLength = 100;
@@ -14,8 +13,6 @@ float yaw1   = 0.0F;
 float elbow  = 0.0F;
 float temp  = 0.0F;
 float alt   = 0.0F;
-
-OBJModel model;
 
 // Serial port state.
 Serial       port;
