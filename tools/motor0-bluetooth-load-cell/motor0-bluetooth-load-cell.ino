@@ -28,17 +28,18 @@
 
 #define calibration_factor -7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
 
-//#define LOADCELL_DOUT_PIN  PB10
-//#define LOADCELL_SCK_PIN  PB11
-#define LOADCELL_DOUT_PIN  PC14
-#define LOADCELL_SCK_PIN  PC13
+#define LOADCELL_DOUT_PIN 5 // D5
+#define LOADCELL_SCK_PIN 4 // D4
 
-#define MOTOR_PIN PB1
+#define MOTOR_PIN 3 // D3
 #define DELAY 1000
 #define MOTOR_POS0 45
 
 HX711 scale;
 Servo myservo; // create servo object to control a servo
+
+#include <SoftwareSerial.h>
+SoftwareSerial Serial1(6, 7); // RX (D6), TX (D7)
 
 void setup() {
   Serial.begin(9600);
@@ -53,7 +54,7 @@ void setup() {
   pinMode(MOTOR_PIN, OUTPUT);
   myservo.attach(MOTOR_PIN); // attaches the servo on pin 9 to the servo object
   myservo.write(MOTOR_POS0);
-  Serial1.begin(9600);
+  Serial1.begin(38400);
   delay(DELAY);
 }
 

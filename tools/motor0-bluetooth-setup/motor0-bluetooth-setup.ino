@@ -6,13 +6,16 @@
 
 Servo myservo; // create servo object to control a servo
 // twelve servo objects can be created on most boards
- 
+
+#include <SoftwareSerial.h>
+SoftwareSerial Serial1(6, 7); // RX (D6), TX (D7)
+
 void setup()
 {
   pinMode(MOTOR_PIN, OUTPUT);
   myservo.attach(MOTOR_PIN); // attaches the servo on pin 9 to the servo object
   myservo.write(MOTOR_POS0);
-  Serial1.begin(9600);
+  Serial1.begin(38400);
   delay(DELAY);
 }
  

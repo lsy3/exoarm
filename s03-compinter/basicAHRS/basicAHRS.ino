@@ -209,7 +209,7 @@ enum Mscale {
   MFS_16BITS      // 0.15 mG per LSB
 };
 
-#define LED_PIN PB12
+#define LED_PIN LED_BUILTIN
 
 // Specify sensor full scale
 uint8_t Gscale = GFS_250DPS;
@@ -261,12 +261,12 @@ float eInt[3] = {0.0f, 0.0f, 0.0f};       // vector to hold integral error for M
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   /* blue pill powew IMU through GPIO. not highly recommended */
-  pinMode(PB8, OUTPUT);
-  pinMode(PB9, OUTPUT);
-  digitalWrite(PB8, HIGH);
-  digitalWrite(PB9, LOW);
+  pinMode(A3, OUTPUT);
+  pinMode(A2, OUTPUT);
+  digitalWrite(A3, HIGH);
+  digitalWrite(A2, LOW);
   Wire.begin();
 //  TWBR = 12;  // 400 kbit/sec I2C speed
   // Setup for Master mode, pins 18/19, external pullups, 400kHz

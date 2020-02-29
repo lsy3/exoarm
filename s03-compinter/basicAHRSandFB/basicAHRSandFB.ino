@@ -167,12 +167,15 @@
 #define SerialDebug true   // set to true to get Serial output for debugging
 
 #define LOAD_CALIB_FACTOR -7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
-#define LOADCELL_DOUT_PIN  PC14
-#define LOADCELL_SCK_PIN  PC13
+#define LOADCELL_DOUT_PIN 5 // D5
+#define LOADCELL_SCK_PIN 4 // D4
 
-#define MOTOR_PIN PB1
+#define MOTOR_PIN 3 // D3
 #define MOTOR_MAXPOS 125
 #define MOTOR_MINPOS 0
+
+#include <SoftwareSerial.h>
+SoftwareSerial Serial1(6, 7); // RX (D6), TX (D7)
 
 #define K_P 0.6
 #define K_I 0.0
@@ -203,7 +206,7 @@ enum Mscale {
   MFS_16BITS      // 0.15 mG per LSB
 };
 
-#define LED_PIN PB12
+#define LED_PIN LED_BUILTIN
 
 // Specify sensor full scale
 uint8_t Gscale = GFS_250DPS;
@@ -256,16 +259,16 @@ float eInt[3] = {0.0f, 0.0f, 0.0f};       // vector to hold integral error for M
 void setup()
 {
   /* blue pill powew IMU through GPIO. not highly recommended */
-  pinMode(PB8, OUTPUT);
-  pinMode(PB9, OUTPUT);
-  digitalWrite(PB8, HIGH);
-  digitalWrite(PB9, LOW);
+  pinMode(A3, OUTPUT);
+  pinMode(A2, OUTPUT);
+  digitalWrite(A3, HIGH);
+  digitalWrite(A2, LOW);
   
   Wire.begin();
 //  TWBR = 12;  // 400 kbit/sec I2C speed
   // Setup for Master mode, pins 18/19, external pullups, 400kHz
   //Wire.begin(I2C_MASTER, 0x00, I2C_PINS_16_17, I2C_PULLUP_EXT, I2C_RATE_100);
-  Serial.begin(38400);
+  Serial.begin(9600);
   Serial1.begin(38400);
   
   // Set up the interrupt pin, its set as active high, push-pull

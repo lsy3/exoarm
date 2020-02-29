@@ -22,6 +22,9 @@
   by Erik Nyquist
 */
 
+#include <SoftwareSerial.h>
+SoftwareSerial Serial1(6, 7); // RX (D6), TX (D7)
+
 void setup() {
   Serial.begin(9600);
   Serial.println("Enter AT commands:");

@@ -4,12 +4,14 @@ Simple feedback
 
 #include "HX711.h" //This library can be obtained here http://librarymanager/All#Avia_HX711
 #include <Servo.h>
+#include <SoftwareSerial.h>
+SoftwareSerial Serial1(6, 7); // RX (D6), TX (D7)
 
 #define LOAD_CALIB_FACTOR -7050.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
-#define LOADCELL_DOUT_PIN  PC14
-#define LOADCELL_SCK_PIN  PC13
+#define LOADCELL_DOUT_PIN 5 // D5
+#define LOADCELL_SCK_PIN 4 // D4
 
-#define MOTOR_PIN PB1
+#define MOTOR_PIN 3 // D3
 #define MOTOR_MAXPOS 125
 #define MOTOR_MINPOS 0
 

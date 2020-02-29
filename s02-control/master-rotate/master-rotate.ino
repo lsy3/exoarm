@@ -1,6 +1,8 @@
 #include <Servo.h>
+#include <SoftwareSerial.h>
+SoftwareSerial Serial1(6, 7); // RX (D6), TX (D7)
 
-#define MOTOR_PIN PB1
+#define MOTOR_PIN 3 // D3
 #define MOTOR_MAXPOS 90
 #define MOTOR_MINPOS 0
 #define DELAY 500

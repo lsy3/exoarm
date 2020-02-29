@@ -1,6 +1,6 @@
 #include <Servo.h>
 
-#define MOTOR_PIN PB1
+#define MOTOR_PIN 3 // D3
 #define MOTOR_MAXPOS 125
 #define MOTOR_MINPOS 0
 #define DELAY 2000
