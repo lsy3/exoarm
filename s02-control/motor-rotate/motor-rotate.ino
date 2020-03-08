@@ -1,7 +1,7 @@
 #include <Servo.h>
 
 #define MOTOR_PIN 3 // D3
-#define MOTOR_MAXPOS 125
+#define MOTOR_MAXPOS 100
 #define MOTOR_MINPOS 0
 #define DELAY 2000
 
@@ -20,16 +20,16 @@ void setup()
  
 void loop()
 {
-  for(pos = MOTOR_MINPOS; pos <= MOTOR_MAXPOS; pos += 1) // goes from 0 degrees to 180 degrees
+  for(pos = MOTOR_MINPOS; pos <= MOTOR_MAXPOS; pos+=2) // goes from 0 degrees to 180 degrees
   { // in steps of 1 degree
     myservo.write(pos); // tell servo to go to position in variable 'pos'
-    delay(1); // waits 15ms for the servo to reach the position
+    delay(15); // waits 15ms for the servo to reach the position
   }
   delay(DELAY);
-  for(pos = MOTOR_MAXPOS; pos>=MOTOR_MINPOS; pos-=1) // goes from 180 degrees to 0 degrees
+  for(pos = MOTOR_MAXPOS; pos>=MOTOR_MINPOS; pos-=2) // goes from 180 degrees to 0 degrees
   {
     myservo.write(pos); // tell servo to go to position in variable 'pos'
-    delay(1); // waits 15ms for the servo to reach the position
+    delay(15; // waits 15ms for the servo to reach the position
   }
   delay(DELAY);
 }

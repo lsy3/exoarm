@@ -81,6 +81,7 @@ void draw()
   translate(320, 240, 0);
   
   // Rotate shapes around the X/Y/Z axis (values in radians, 0..Pi*2)
+  rotateZ(radians(180));
   rotateY(radians(roll1));
   rotateZ(radians(pitch1));
   rotateX(radians(yaw1)); // extrinsic rotation

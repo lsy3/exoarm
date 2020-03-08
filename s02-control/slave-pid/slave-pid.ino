@@ -3,9 +3,11 @@ Simple feedback
 */
 
 #include <Servo.h>
+#include <SoftwareSerial.h>
+SoftwareSerial Serial1(6, 7); // RX (D6), TX (D7)
 
 #define MOTOR_PIN 3 // D3
-#define MOTOR_MAXPOS 125
+#define MOTOR_MAXPOS 110
 #define MOTOR_MINPOS 0
 
 #define K_P 0.6
